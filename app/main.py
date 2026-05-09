@@ -18,11 +18,10 @@ def main():
         if not command:
             continue
         cmd=shlex.split(command)
-        print()
         if cmd[0] == "exit":
             sys.exit()
         elif command.startswith("echo "):
-            print("".join(cmd[1:]))
+            print(" ".join(cmd[1:]))
         elif command.startswith("type "):
             if cmd[1] in builtin:
                 print(f'{cmd[1]} is a shell builtin')
@@ -34,7 +33,11 @@ def main():
                     print(f'{cmd[1]}: not found') 
 
         else:
-            print(f'{command}: command not found')
+            new_path=executable(name[0])
+            if new_path:
+                subprocess.run(name)
+            else:
+                print(f'{name[0]}: command not found')
         
 if __name__ == "__main__":
     main()
