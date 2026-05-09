@@ -20,6 +20,13 @@ def main():
         cmd=shlex.split(command)
         if cmd[0] == "exit":
             sys.exit()
+        elif '>' in cmd or '1>' in cmd:
+            if '>' in cmd:
+                red_index=cmd.index('>')
+            elif '1>' in cmd:
+                red_index=cmd.index('1>')
+            with open(cmd[-1],'w') as f:
+                subprocess.run(cmd[:red_index],stdout=f)
         elif command.startswith("echo "):
             print(" ".join(cmd[1:]))
         elif cmd[0]=='pwd':
