@@ -7,6 +7,9 @@ def main():
         commmand=input("")
         if commmand == "exit":
             break
-        print(f'{commmand}: command not found')
+        elif commmand.startswith("echo "):
+            print(commmand[5:])
+        else:
+            print(f'{commmand}: command not found')
 if __name__ == "__main__":
     main()
