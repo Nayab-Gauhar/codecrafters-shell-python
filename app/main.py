@@ -10,7 +10,7 @@ def main():
             break
         elif commmand.startswith("echo "):
             print(commmand[5:])
-        if commmand[:4] =='type':
+        elif commmand[:4] =='type':
             if commmand[5:] in builtin:
                 print(f'{commmand[5:]} is a shell builtin')
             else:
