@@ -1,5 +1,7 @@
 import sys
 import os
+import shlex
+import subprocess
 
 def main():
     def executable(command):
@@ -13,19 +15,23 @@ def main():
     while True:
         sys.stdout.write("$ ")
         command=input("")
-        if command == "exit":
+        if not command:
+            continue
+        cmd=shlex.split(command)
+        print()
+        if cmd[0] == "exit":
             sys.exit()
         elif command.startswith("echo "):
-            print(command[5:])
+            print("".join(cmd[1:]))
         elif command.startswith("type "):
-            if command[5:] in builtin:
-                print(f'{command[5:]} is a shell builtin')
+            if cmd[1] in builtin:
+                print(f'{cmd[1]} is a shell builtin')
             else:
-                path=executable(command[5:])
+                path=executable(cmd[1])
                 if path:
-                    print(f'{command[5:]} is {path}')
+                    print(f'{cmd[1]} is {path}')
                 else:
-                    print(f'{command[5:]}: not found') 
+                    print(f'{cmd[1]}: not found') 
 
         else:
             print(f'{command}: command not found')
