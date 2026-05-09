@@ -33,11 +33,11 @@ def main():
                     print(f'{cmd[1]}: not found') 
 
         else:
-            new_path=executable(name[0])
+            new_path=executable(cmd[0])
             if new_path:
-                subprocess.run(name)
+                subprocess.run(cmd)
             else:
-                print(f'{name[0]}: command not found')
+                print(f'{cmd[0]}: command not found')
         
 if __name__ == "__main__":
     main()
