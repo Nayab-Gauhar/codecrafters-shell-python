@@ -24,6 +24,15 @@ def main():
             print(" ".join(cmd[1:]))
         elif cmd[0]=='pwd':
             print(os.getcwd())
+        elif cmd[0]=='cd':
+            if cmd[1]=='~':
+                os.chdir(os.getenv('HOME'))
+                continue
+            else:
+                if os.path.exists(cmd[1]):
+                    os.chdir(cmd[1])
+                else:
+                    print(f'cd: {cmd[1]}: No such file or directory')
         elif command.startswith("type "):
             if cmd[1] in builtin:
                 print(f'{cmd[1]} is a shell builtin')
