@@ -11,7 +11,7 @@ def main():
                 return full_path
         return None
 
-    builtin=['echo','exit','type']
+    builtin=['echo','exit','type','pwd']
     while True:
         sys.stdout.write("$ ")
         command=input("")
@@ -23,8 +23,7 @@ def main():
         elif command.startswith("echo "):
             print(" ".join(cmd[1:]))
         elif cmd[0]=='pwd':
-            os.getcwd()
-        
+            print(os.getcwd())
         elif command.startswith("type "):
             if cmd[1] in builtin:
                 print(f'{cmd[1]} is a shell builtin')
