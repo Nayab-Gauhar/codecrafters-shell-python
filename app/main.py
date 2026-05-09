@@ -41,8 +41,10 @@ def main():
                 red_index=cmd.index('1>>')
             with open(cmd[-1],'a') as f:
                 subprocess.run(cmd[:red_index],stdout=f)
-        # elif '2>>' in cmd:
-        #     red_index=cmd.index
+        elif '2>>' in cmd:
+            red_index=cmd.index('2>>')
+            with open(cmd[-1],'a') as f:
+                subprocess.run(cmd[:red_index],stderr=f)
         elif command.startswith("echo "):
             print(" ".join(cmd[1:]))
         elif cmd[0]=='pwd':
