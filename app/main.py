@@ -53,8 +53,9 @@ def main():
     
 
     while True:
-        sys.stdout.write("$ ")
-        command=input("")
+        # sys.stdout.write("$ ")
+        # sys.stdout.flush()
+        command=input("$ ")
         if not command:
             continue
         cmd=shlex.split(command)
