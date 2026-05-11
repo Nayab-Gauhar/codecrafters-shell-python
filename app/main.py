@@ -7,25 +7,50 @@ import readline
 def main():
     cmd_hist=['echo','exit']
     builtin=['echo','exit','type','pwd']
-    def completer(text,state):
-        matches=[]
-        for cmd in cmd_hist:
-            if cmd.startswith(text):
-                matches.append(cmd+" ")
-                # print(matches)
-        if state<len(matches):
-            return matches[state]
-            # print(matches)
-        return None
-    readline.set_completer(completer)
-    readline.parse_and_bind('tab: complete')
     def executable(command):
         for directories in os.environ['PATH'].split(os.pathsep):
             full_path=os.path.join(directories, command)
             if os.path.isfile(full_path) and os.access(full_path,os.X_OK):
                 return full_path
         return None
-
+    # # def paths(text):
+    # #     try:
+    # #         if cmd.startswith(text):
+    # #             New_path=os.environ('PATH').split(os.pathsep)
+    # #             for i in New_path:
+    # #                 os.listdir(i)
+                    
+    #     except:
+    #         return FileNotFoundError
+    def completer(text,state):
+        matches=[]
+        # for builtiin functions
+        for usr_input in cmd_hist:
+            if usr_input.startswith(text):
+                matches.append(usr_input+" ")
+                # print(matches)
+        #now for the directories matches
+        for directory in os.environ['PATH'].split(os.pathsep):
+            try:
+                files=os.listdir(directory)
+                for file in files:
+                    if file.startswith(text):
+                         full_path=executable(file)
+                         if full_path:
+                            matches.append(file+" ")
+                         
+            except FileNotFoundError:
+                continue
+            
+        if len(matches) ==0 and state==0:
+            sys.stdout.write("\x07")
+            sys.stdout.flush()
+        if state<len(matches):
+            return matches[state]
+        return None
+    readline.set_completer(completer)
+    readline.parse_and_bind('tab: complete')
+    
 
     while True:
         sys.stdout.write("$ ")
@@ -65,9 +90,10 @@ def main():
         elif cmd[0]=='pwd':
             print(os.getcwd())
         elif cmd[0]=='cd':
-            if cmd[1]=='~':
+            if len(cmd)==1:
                 os.chdir(os.getenv('HOME'))
-                continue
+            elif cmd[1]=='~':
+                os.chdir(os.getenv('HOME'))
             else:
                 if os.path.exists(cmd[1]):
                     os.chdir(cmd[1])
