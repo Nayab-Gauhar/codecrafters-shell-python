@@ -49,8 +49,7 @@ def main():
             curr=os.listdir(os.getcwd())
             for f in curr:
                 if f.startswith(text):
-                    if os.path.isfile(f):
-                        matches.append(f+" ")
+                    matches.append(f+" ")
 
         if len(matches) ==0 and state==0:
             sys.stdout.write("\x07")
