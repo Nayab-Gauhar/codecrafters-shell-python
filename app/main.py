@@ -58,6 +58,7 @@ def main():
         elif state<len(matches):
             return matches[state]
         return None
+    readline.set_completer_delims(' \t\n')
     readline.set_completer(completer)
     readline.parse_and_bind('tab: complete')
     
