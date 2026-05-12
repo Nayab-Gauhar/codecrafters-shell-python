@@ -25,27 +25,37 @@ def main():
     def completer(text,state):
         matches=[]
         # for builtiin functions
-        for usr_input in cmd_hist:
-            if usr_input.startswith(text):
-                matches.append(usr_input+" ")
-                # print(matches)
-        #now for the directories matches
-        for directory in os.environ['PATH'].split(os.pathsep):
-            try:
-                files=os.listdir(directory)
-                for file in files:
-                    if file.startswith(text):
-                         full_path=executable(file)
-                         if full_path:
-                            matches.append(file+" ")
-                         
-            except FileNotFoundError:
-                continue
-            
+        line=readline.get_line_buffer()
+        begin=readline.get_begidx()
+
+        if ' ' not in line[:begin]:
+            for usr_input in cmd_hist:
+                if usr_input.startswith(text):
+                    matches.append(usr_input+" ")
+                    # print(matches)
+            #now for the directories matches
+            for directory in os.environ['PATH'].split(os.pathsep):
+                try:
+                    files=os.listdir(directory)
+                    for file in files:
+                        if file.startswith(text):
+                            full_path=executable(file)
+                            if full_path:
+                                matches.append(file + " ")
+                            
+                except FileNotFoundError:
+                    continue      
+        else:
+            curr=os.listdir(os.getcwd())
+            for f in curr:
+                if f.startswith(text):
+                    if os.path.isfile(f):
+                        matches.append(f+" ")
+
         if len(matches) ==0 and state==0:
             sys.stdout.write("\x07")
             sys.stdout.flush()
-        if state<len(matches):
+        elif state<len(matches):
             return matches[state]
         return None
     readline.set_completer(completer)
@@ -61,8 +71,6 @@ def main():
         cmd=shlex.split(command)
         if cmd[0] == "exit":
             sys.exit()
-
-            pass
         elif '>' in cmd or '1>' in cmd:
             if '>' in cmd:
                 red_index=cmd.index('>')
